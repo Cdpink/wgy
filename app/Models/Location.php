@@ -6,14 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    protected $fillable = [
-        'city',
-        'state',
-        'country',
-    ];
+    protected $fillable = ['province', 'region'];
 
-    public function dogs()
+    // Relationship with posts
+    public function posts()
     {
-        return $this->hasMany(Dog::class);
+        return $this->hasMany(Post::class, 'province', 'province');
     }
 }

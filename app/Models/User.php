@@ -19,11 +19,18 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-    'name', 'email', 'password',
-    // pet fields (kung nilalagay dito)
-    'pet_name','pet_breed','pet_age','pet_gender','pet_features',
-    'certificate_verified','certificate_path'
-];
+        'name',
+        'email',
+        'password',
+        // pet fields 
+        'pet_name',
+        'pet_breed',
+        'pet_age',
+        'pet_gender',
+        'pet_features',
+        'certificate_verified',
+        'certificate_path'
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -79,7 +86,7 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class);
-   }
+    }
 
     public function sentFriendRequests()
     {

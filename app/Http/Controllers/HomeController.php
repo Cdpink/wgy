@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;       // ✅ Correct import
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
@@ -12,17 +12,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Start building the query
         $query = Post::with('user')->orderBy('created_at', 'desc');
 
-        // =============================
         // AGE FILTER
-        // =============================
         if ($request->has('age') && $request->age != '') {
             $selectedAge = $request->age;
-
             if ($selectedAge == 6) {
-                // 6+ years old means >= 6
                 $query->where('age', '>=', 6);
             } else {
                 $query->where('age', $selectedAge);
@@ -34,26 +29,20 @@ class HomeController extends Controller
             $query->where('breed', $request->breed);
         }
 
-        // LOCATION FILTER
-        if ($request->has('location') && $request->location != '') {
-            $query->where(function ($q) use ($request) {
-                $q->where('city', $request->location)
-                  ->orWhere('province', $request->location);
-            });
-        }
+        // PROVINCE FILTER
 
         // AUDIENCE FILTER
-        if ($request->has('type') && $request->type !== 'all') {
-            $query->where('audience', $request->type);
+        $selectedType = $request->type ?? 'all';
+        if ($selectedType !== 'all') {
+            $query->where('audience', $selectedType);
         }
-
-        // FINAL FETCH
         $posts = $query->get();
-
-        $locations = Location::all();
+        $locations = Location::orderBy('region')->orderBy('province')->get();
         $contacts = User::where('is_online', true)->limit(10)->get();
         $user = Auth::user();
+        $selectedCity = $request->city ?? null;
 
-        return view('home.index', compact('posts', 'locations', 'contacts', 'user'));
+
+        return view('home.index', compact('posts', 'locations', 'contacts', 'user', 'selectedCity'));
     }
 }

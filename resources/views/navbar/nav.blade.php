@@ -58,6 +58,11 @@
         background-color: #1B1E25;
     }
 
+    .home-navlinks.active {
+        background-color: rgba(255,255,255,0.12);
+        color: #fff;
+    }
+
 
     </style>
 </head>
@@ -76,13 +81,25 @@
 
         <div class="d-flex align-items-center gap-4 mx-auto">
 
-             <a href="{{ route('home') }}" class="home-navlinks fs-4">
-              <i class="bi bi-house"></i>
-             </a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-person-add"></i></a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-chat-dots"></i></a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-geo-alt"></i></a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-bell"></i></a>
+            <a href="{{ route('home') }}" class="home-navlinks fs-4 {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="bi bi-house"></i>
+            </a>
+
+            <a href="{{ route('friend-requests') }}" class="home-navlinks fs-4 {{ request()->routeIs('friend-requests') ? 'active' : '' }}">
+                <i class="bi bi-person-add"></i>
+            </a>
+
+            <a href="{{ route('messages') }}" class="home-navlinks fs-4 {{ request()->routeIs('messages') || request()->routeIs('messages.*') ? 'active' : '' }}">
+                <i class="bi bi-chat-dots"></i>
+            </a>
+
+            <a href="{{ route('location') }}" class="home-navlinks fs-4 {{ request()->routeIs('location') ? 'active' : '' }}">
+                <i class="bi bi-geo-alt"></i>
+            </a>
+
+            <a href="{{ route('notifications') }}" class="home-navlinks fs-4 {{ request()->routeIs('notifications') ? 'active' : '' }}">
+                <i class="bi bi-bell"></i>
+            </a>
 
         </div>
 

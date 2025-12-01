@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\locationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -10,9 +11,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\DiscoverController;
-use App\Http\Controllers\BreedingController;
-use App\Http\Controllers\PlaydateController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +19,9 @@ use App\Http\Controllers\PlaydateController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {return view('landing.landing');})->name('landing');
+Route::get('/', function () {
+    return view('landing.landing');
+})->name('landing');
 
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'register'])->name('signup.post');
@@ -52,20 +53,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/location', [LocationController::class, 'index'])->name('location');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::get('/certificate', [CertificateController::class, 'index'])->name('certificate');
     Route::post('/certificate', [CertificateController::class, 'upload'])->name('verifycertificate.verify');
 
-    Route::get('/breeding', [BreedingController::class, 'index'])->name('breeding');
-    Route::get('/playdate', [PlaydateController::class, 'index'])->name('playdate');
-
     Route::get('/posting', [PostController::class, 'postingPage'])->name('posting.page');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/create-post', [PostController::class, 'create'])->name('posts.create');
     Route::post('/set-upload-session', [PostController::class, 'setUploadSession']);
-    Route::get('/clear-upload-session', function () {session()->forget('uploaded_image');return response()->json(['cleared' => true]);});
+    Route::get('/clear-upload-session', function () {
+        session()->forget('uploaded_image');
+        return response()->json(['cleared' => true]);
+    });
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/{id}/report', [PostController::class, 'report'])->name('posts.report');
     Route::post('/posts/{user_id}/block', [PostController::class, 'block'])->name('user.block');

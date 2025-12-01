@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'user_id',
         'age',
         'breed',
@@ -17,6 +17,26 @@ class Post extends Model
         'message',
         'photo',
     ];
+    public function getAgeFormattedAttribute()
+    {
+        $months = $this->age;
+        $years = intdiv($months, 12);
+        $remainingMonths = $months % 12;
+
+        if ($years > 0 && $remainingMonths > 0) {
+            return "{$years} years {$remainingMonths} months";
+        }
+
+        if ($years > 0) {
+            return "{$years} years";
+        }
+
+        if ($remainingMonths > 0) {
+            return "{$remainingMonths} months";
+        }
+
+        return "0 months";
+    }
 
     public function user()
     {

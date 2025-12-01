@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
 
     <title>@yield('title', 'Waggy')</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
@@ -22,15 +23,17 @@
             background-color: #282C36;
             height: 70px;
         }
+
         .home-navlinks {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             padding: 8px 16px;
             border-radius: 8px;
             transition: .2s;
             text-decoration: none;
         }
+
         .home-navlinks:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
         }
 
@@ -42,24 +45,25 @@
             top: 70px;
             left: 0;
             background-color: #191B21;
-            border-right: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
             overflow-y: auto;
             z-index: 2;
             padding: 1.5rem;
         }
 
         /* MAIN CONTENT (EXTEND) */
-       .main-wrapper {
-        position: absolute;
-        top: 70px;
-        left: 280px;
-        right: @hasSection('right-sidebar') 300px @else 0 @endif;
-        height: calc(100vh - 70px);
-        overflow-y: auto;
-        padding: 1.5rem;
-        background-color: #1B1E25;
-}
-
+        .main-wrapper {
+            position: absolute;
+            top: 70px;
+            left: 280px;
+            right:
+                @hasSection('right-sidebar')
+                300px @else 0 @endif;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            padding: 1.5rem;
+            background-color: #1B1E25;
+        }
     </style>
 </head>
 
@@ -77,13 +81,13 @@
 
         <div class="d-flex align-items-center gap-4 mx-auto">
 
-           <a href="{{ route('home') }}" class="home-navlinks fs-4">
-            <i class="bi bi-house"></i>
-           </a>
+            <a href="{{ route('home') }}" class="home-navlinks fs-4">
+                <i class="bi bi-house"></i>
+            </a>
 
             <a href="#" class="home-navlinks fs-4"><i class="bi bi-person-add"></i></a>
             <a href="#" class="home-navlinks fs-4"><i class="bi bi-chat-dots"></i></a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-geo-alt"></i></a>
+            <a href="{{ route('location') }}" class="home-navlinks fs-4"><i class="bi bi-geo-alt"></i></a>
             <a href="#" class="home-navlinks fs-4"><i class="bi bi-bell"></i></a>
 
         </div>
@@ -96,17 +100,20 @@
             <!-- PROFILE DROPDOWN -->
             <div class="position-relative">
                 <a href="#" id="profileDropdown" class="d-flex align-items-center gap-2 text-decoration-none">
-                    <img src="{{ auth()->user()->avatar ? asset('storage/'.auth()->user()->avatar) : asset('assets/usericon.png') }}"
-                         style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+                        style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                     <i class="bi bi-chevron-down text-white" style="font-size:12px;"></i>
                 </a>
 
                 <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end" style="display:none;">
-                    <li><a class="dropdown-item" href="{{ route('setting') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ route('setting') }}"><i
+                                class="bi bi-gear me-2"></i>Settings</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li>
                         <a class="dropdown-item" href="#"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout
                         </a>
                     </li>
@@ -124,8 +131,8 @@
     <div id="left-sidebar">
 
         <a href="{{ route('profile') }}" class="d-flex align-items-center gap-3 text-decoration-none mb-4">
-            <img src="{{ auth()->user()->avatar ? asset('storage/'.auth()->user()->avatar) : asset('assets/usericon.png') }}"
-                 style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+            <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('assets/usericon.png') }}"
+                style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
             <div>
                 <h5 class="text-white m-0">{{ auth()->user()->pet_name }}</h5>
                 <small class="text-white">{{ auth()->user()->pet_breed }}</small>
@@ -156,8 +163,8 @@
     padding: 1.5rem;
     z-index: 2;
 ">
-    @yield('right-sidebar')
-</div>
+        @yield('right-sidebar')
+    </div>
 
 
     <!-- MAIN CONTENT (WHERE OTHER PAGES GO) -->
@@ -169,16 +176,17 @@
         const profileBtn = document.getElementById("profileDropdown");
         const menu = document.getElementById("dropdownMenu");
 
-        profileBtn.onclick = function(e){
+        profileBtn.onclick = function (e) {
             e.preventDefault();
             menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
 
-        document.addEventListener("click", function(e){
-            if(!profileBtn.contains(e.target)) menu.style.display = "none";
+        document.addEventListener("click", function (e) {
+            if (!profileBtn.contains(e.target)) menu.style.display = "none";
         });
     </script>
-@stack('scripts')
+    @stack('scripts')
 
 </body>
+
 </html>
