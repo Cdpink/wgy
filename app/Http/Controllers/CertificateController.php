@@ -9,56 +9,56 @@ use App\Models\User;
 
 class CertificateController extends Controller
 {
-   public function index(Request $request)
-{
-    $user = $request->user(); // pass the user to the view
+    public function index(Request $request)
+    {
+        $user = $request->user();
 
-    return view('verifycertificate.verify', [   // <-- updated view path
-        'user' => $user,
-        'certificate_verified' => $user->certificate_verified,
-        'certificate_path' => $user->certificate_path,
-        'verification_details' => $request->session()->get('certificate_verification_details'),
-    ]);
-}
-
-
-public function upload(Request $request)
-{
-    $user = $request->user();
-
-    // 1. Siguraduhin may uploaded file
-    if (!$user->certificate_path || !\Storage::disk('public')->exists($user->certificate_path)) {
-        return back()->withErrors(['certificate' => 'No certificate uploaded.']);
+        return view('verifycertificate.verify', [
+            'user' => $user,
+            'certificate_verified' => $user->certificate_verified,
+            'certificate_path' => $user->certificate_path,
+            'verification_details' => $request->session()->get('certificate_verification_details'),
+        ]);
     }
 
-    $fullpath = storage_path('app/public/' . $user->certificate_path);
 
-    // 2. Extract text from file
-    try {
-        $text = $this->extractTextFromFile($fullpath); // gamit ang existing method mo
-    } catch (\Throwable $e) {
-        return back()->withErrors(['certificate' => 'Cannot read certificate file.']);
+    public function upload(Request $request)
+    {
+        $user = $request->user();
+
+        // 1. Siguraduhin may uploaded file
+        if (!$user->certificate_path || !\Storage::disk('public')->exists($user->certificate_path)) {
+            return back()->withErrors(['certificate' => 'No certificate uploaded.']);
+        }
+
+        $fullpath = storage_path('app/public/' . $user->certificate_path);
+
+        // 2. Extract text from file
+        try {
+            $text = $this->extractTextFromFile($fullpath);
+        } catch (\Throwable $e) {
+            return back()->withErrors(['certificate' => 'Cannot read certificate file.']);
+        }
+
+        // 3. Prepare fields to match
+        $fields = [
+            'pet_name' => $user->pet_name,
+            'breedtype' => $user->pet_breed,
+            'dog_age' => $user->pet_age,
+            'gendertype' => $user->pet_gender,
+        ];
+
+        $match = $this->matchFieldsToText($fields, $text);
+
+        if ($match['passed']) {
+            $user->certificate_verified = true;
+            $user->save();
+
+            return redirect()->route('home')->with('success', 'Certificate verified successfully!');
+        }
+
+        return back()->withErrors(['certificate' => 'Verification failed: ' . $match['summary']]);
     }
-
-    // 3. Prepare fields to match
-    $fields = [
-        'pet_name' => $user->pet_name,
-        'breedtype' => $user->pet_breed,
-        'dog_age' => $user->pet_age,
-        'gendertype' => $user->pet_gender,
-    ];
-
-    $match = $this->matchFieldsToText($fields, $text);
-
-    if ($match['passed']) {
-        $user->certificate_verified = true;
-        $user->save();
-
-        return redirect()->route('home')->with('success', 'Certificate verified successfully!');
-    }
-
-    return back()->withErrors(['certificate' => 'Verification failed: ' . $match['summary']]);
-}
 
     protected function extractTextFromFile(string $fullpath): string
     {
@@ -113,7 +113,7 @@ public function upload(Request $request)
             }
         }
 
-        // threshold: require 75% or at least 1 (adjust as needed)
+
         $passed = ($passedCount >= max(1, ceil($needed * 0.75)));
         $summary = "Matched {$passedCount} of {$needed} fields.";
 

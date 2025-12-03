@@ -41,7 +41,6 @@ class PostController extends Controller
 
             $data = $request->image_base64;
 
-            // remove base64 prefixes
             $data = str_replace('data:image/png;base64,', '', $data);
             $data = str_replace('data:image/jpeg;base64,', '', $data);
 
