@@ -338,7 +338,7 @@
                         <a href="{{ route('messages') }}" class="btn btn-link text-white d-flex align-items-center gap-2"
                             style="font-size:13px; text-decoration:none;">
                             <i class="bi bi-chat-dots" style="font-size:18px;"></i>
-                            <span>Message</span>
+                            <span>Comment</span>
                         </a>
 
                     </div>
