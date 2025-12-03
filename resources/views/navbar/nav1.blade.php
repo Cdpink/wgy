@@ -64,6 +64,30 @@
             padding: 1.5rem;
             background-color: #1B1E25;
         }
+
+
+                /* CHAT DRAWER PANEL */
+        #chatDrawer {
+            width: 320px;
+            height: 100vh;
+            background:#191B21;
+            position: fixed;
+            top: 0;
+            right: -350px;                /* HIDDEN STATE */
+            transition: .3s ease;
+            border-left: 1px solid rgba(255,255,255,0.07);
+            z-index: 9999;
+            color:white;
+        }
+
+        #chatDrawer.open {
+            right: 0;                     /* SHOW WHEN OPEN */
+        }
+
+        .chat-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
     </style>
 </head>
 
@@ -126,6 +150,33 @@
         </div>
     </nav>
 
+
+
+        <!-- RIGHT CHAT DRAWER (HIDDEN BY DEFAULT) -->
+    <div id="chatDrawer">
+        <div class="chat-header d-flex justify-content-between align-items-center px-3 py-2">
+            <h5 class="m-0 text-white">Chats</h5>
+            <button id="closeChat" class="btn text-white"><i class="bi bi-x-lg"></i></button>
+        </div>
+
+        <div class="chat-search p-2">
+            <input type="text" class="form-control form-control-sm text-black"
+                placeholder="Search Messenger.." style="background:white;border:none;">
+        </div>
+
+        <div class="chat-list p-2">
+            <!-- SAMPLE CHAT LIST -->
+            <div class="chat-item d-flex align-items-center p-2 rounded" style="cursor:pointer;">
+                <img src="{{ asset('assets/usericon.png') }}" width="40" height="40" class="rounded-circle me-2">
+                <div>
+                    <b class="text-white">Sample User</b><br>
+                    <small class="text-secondary">Hello there!</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- SIDEBAR -->
     <div id="left-sidebar">
 
@@ -183,6 +234,22 @@
         document.addEventListener("click", function (e) {
             if (!profileBtn.contains(e.target)) menu.style.display = "none";
         });
+
+     
+        const msgBtn = document.querySelector("a[href='{{ route('messages') }}']"); // Message icon
+        const chatDrawer = document.getElementById("chatDrawer");
+        const closeChat = document.getElementById("closeChat");
+
+        msgBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            chatDrawer.classList.add("open");
+        });
+
+        closeChat.addEventListener("click", () => {
+            chatDrawer.classList.remove("open");
+        });
+
+
     </script>
     @stack('scripts')
 
