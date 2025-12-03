@@ -54,59 +54,35 @@
         }
 
         .dropdown-menu-custom {
-            display: none;
-            padding: 8px 0;
+            background: #1B1E25;
+            border-radius: 8px;
+            overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 100;
         }
 
         .dropdown-item-custom {
+            display: block;
             width: 100%;
-            background: none;
+            padding: 10px 15px;
+            background: transparent;
             border: none;
-            color: white;
-            padding: 8px 15px;
+            color: #fff;
             text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
         .dropdown-item-custom:hover {
-            background: #343a40;
+            background: #252938;
         }
 
-        #age-options {
-            scrollbar-width: thin;
-            scrollbar-color: #495057 #1B1E25;
+        .dropdown-item-custom.text-danger {
+            color: #dc3545;
         }
 
-        #age-options::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #age-options::-webkit-scrollbar-track {
-            background: #1B1E25;
-            border-radius: 8px;
-        }
-
-        #age-options::-webkit-scrollbar-thumb {
-            background: #495057;
-            border-radius: 8px;
-        }
-
-        #age-options::-webkit-scrollbar-thumb:hover {
-            background: #6c757d;
-        }
-
-        .age-select:hover {
-            background-color: #343a40 !important;
-        }
-
-        #age-options .list-group-item {
-            border: none;
-            border-bottom: 1px solid #1B1E25;
-        }
-
-        #age-options .list-group-item:last-child {
-            border-bottom: none;
+        .dropdown-item-custom.text-danger:hover {
+            background: rgba(220, 53, 69, 0.1);
         }
     </style>
 
@@ -131,9 +107,9 @@
                             <!-- CLICK AREA THAT REDIRECTS TO FULL POSTING PAGE -->
                             <div onclick="window.location.href='{{ route('posting.page') }}'"
                                 style="
-                                                                                                                                                                                                                                                                            flex:1; padding:12px 15px; background:#1B1E25;
-                                                                                                                                                                                                                                                                            border-radius:12px; color:#adb5bd; min-height:60px;
-                                                                                                                                                                                                                                                                            border:none; outline:none; resize:none; cursor:pointer;">
+                                                                                                                                            flex:1; padding:12px 15px; background:#1B1E25;
+                                                                                                                                            border-radius:12px; color:#adb5bd; min-height:60px;
+                                                                                                                                            border:none; outline:none; resize:none; cursor:pointer;">
                                 What's on your mind?
                             </div>
 
@@ -158,48 +134,18 @@
                 <!-- Filters -->
                 <div id="filter-section" class="filter-container d-flex justify-content-around p-2">
                     <div class="position-relative">
-                        <button id="filter-age" class="btn btn-link text-white d-flex align-items-center gap-2">
-                            <i class="bi bi-calendar fs-4"></i><span><span id="selectedAge">Age</span></span>
+                        <button id="filter-age" onclick="showAgeModal()"
+                            class="btn btn-link text-white d-flex align-items-center gap-2">
+                            <i class="bi bi-calendar fs-4"></i><span id="age-text">Age</span>
                         </button>
-
-                        <ul id="ageList"
-                            style="
-                                                                                                                                            display:none;
-                                                                                                                                            position:absolute;
-                                                                                                                                            top:100%;
-                                                                                                                                            left:0;
-                                                                                                                                            width:120px;
-                                                                                                                                            background:#1B1E25;
-                                                                                                                                            border-radius:8px;
-                                                                                                                                            margin-top:5px;
-                                                                                                                                            z-index:999;
-                                                                                                                                            padding:0;
-                                                                                                                                            list-style:none;
-                                                                                                                                        ">
-                            <!-- Auto generated by JS -->
-                        </ul>
                     </div>
-
 
                     <div class="position-relative">
-                        <button id="filter-breed" class="btn btn-link text-white d-flex align-items-center gap-2">
-                            <i class="bi bi-tag fs-4"></i><span>Breed</span>
+                        <button id="filter-breed" onclick="showBreedModal()"
+                            class="btn btn-link text-white d-flex align-items-center gap-2">
+                            <i class="bi bi-tag fs-4"></i><span id="breed-text">Breed</span>
                         </button>
-
-                        <!-- BREED DROPDOWN -->
-                        <ul id="breed-options" class="list-group position-absolute mt-2" style="
-                                                                                                                            display:none;
-                                                                                                                            background:#1B1E25;
-                                                                                                                            border-radius:12px;
-                                                                                                                            width:160px;
-                                                                                                                            max-height:180px;
-                                                                                                                            overflow-y:auto;
-                                                                                                                            z-index:1000;
-                                                                                                                        ">
-                            <!-- Auto generated by JS -->
-                        </ul>
                     </div>
-
 
                     <!-- LOCATION FILTER WITH MODAL -->
                     <div class="position-relative">
@@ -210,15 +156,12 @@
                     </div>
 
                     <div class="position-relative">
-                        <button id="filter-type" class="btn btn-link text-white d-flex align-items-center gap-2">
-                            <i class="bi bi-funnel fs-4"></i><span id="filter-type-text">Audience</span>
+                        <button id="filter-type" onclick="showAudienceModal()"
+                            class="btn btn-link text-white d-flex align-items-center gap-2">
+                            <i class="bi bi-funnel fs-4"></i>
+                            <span id="filter-type-text">Audience</span>
                         </button>
-                        <ul id="type-options" class="list-group position-absolute w-100" style="display:none;">
-                            <li class="list-group-item bg-dark text-white type-select" data-type="public">Public</li>
-                            <li class="list-group-item bg-dark text-white type-select" data-type="friends">Friends</li>
-                        </ul>
                     </div>
-
 
                 </div>
 
@@ -233,15 +176,23 @@
 
                     {{-- POST HEADER (User Info) --}}
                     <div class="p-3 d-flex align-items-center gap-3 border-bottom" style="border-color:#1B1E25;">
-                        <img src="{{ $post->user->avatar ? asset('storage/' . $post->user->avatar) : asset('assets/usericon.png') }}"
-                            class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
 
-                        <div>
-                            <h6 class="text-white mb-0" style="font-size:14px;">{{ $post->user->pet_name ?? 'Unknown User' }}
-                            </h6>
-                            <small class="text-white mb-0"
-                                style="font-size:12px;">{{ $post->created_at->diffForHumans() }}</small>
-                        </div>
+                        <a href="{{ route('profile.show', $post->user->id) }}"
+                            class="d-flex align-items-center gap-3 text-decoration-none">
+
+                            <img src="{{ $post->user->avatar ? asset('storage/' . $post->user->avatar) : asset('assets/usericon.png') }}"
+                                class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+
+                            <div>
+                                <h6 class="text-white mb-0" style="font-size:14px;">
+                                    {{ $post->user->pet_name ?? 'Unknown User' }}
+                                </h6>
+                                <small class="text-white mb-0" style="font-size:12px;">
+                                    {{ $post->created_at->diffForHumans() }}
+                                </small>
+                            </div>
+
+                        </a>
 
                         <div class="ms-auto position-relative">
                             <button class="btn btn-link text-white p-0" onclick="toggleMenu({{ $post->id }})">
@@ -275,7 +226,6 @@
                         </div>
 
                     </div>
-
                     {{-- MESSAGE --}}
                     @if($post->message)
                         <div class="p-3">
@@ -333,21 +283,64 @@
 
                     {{-- ACTION BUTTONS --}}
                     <div class="d-flex justify-content-around border-top p-2" style="border-color:#1B1E25;">
+
+                        {{-- LIKE BUTTON --}}
                         <button class="btn btn-link text-white d-flex align-items-center gap-2"
                             style="font-size:13px; text-decoration:none;">
-                            <i class="bi bi-chat" style="font-size:18px;"></i>
-                            <span>Comment</span>
+                            <i class="bi bi-heart" style="font-size:18px;"></i>
+                            <span>Like</span>
                         </button>
-                        <button class="btn btn-link text-white d-flex align-items-center gap-2"
-                            style="font-size:13px; text-decoration:none;">
-                            <i class="bi bi-share" style="font-size:18px;"></i>
-                            <span>Share</span>
-                        </button>
-                        <button class="btn btn-link text-white d-flex align-items-center gap-2"
+
+                        {{-- ADD FRIEND BUTTON (only show if not own post) --}}
+                        @if($post->user_id !== auth()->id())
+                            @php
+                                $friendRequest = \App\Models\FriendRequest::where(function ($q) use ($post) {
+                                    $q->where('sender_id', auth()->id())
+                                        ->where('receiver_id', $post->user_id);
+                                })->first();
+
+                                $isFriend = auth()->user()->isFriendsWith($post->user_id);
+                            @endphp
+
+                            @if($isFriend)
+                                {{-- Already Friends --}}
+                                <button class="btn btn-link text-success d-flex align-items-center gap-2"
+                                    style="font-size:13px; text-decoration:none;" disabled>
+                                    <i class="bi bi-check-circle" style="font-size:18px;"></i>
+                                    <span>Friends</span>
+                                </button>
+                            @elseif($friendRequest && $friendRequest->status === 'pending')
+                                {{-- Cancel Friend Request --}}
+                                <form action="{{ route('friend-requests.cancel', $friendRequest->id) }}" method="POST" class="m-0">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-link text-warning d-flex align-items-center gap-2"
+                                        style="font-size:13px; text-decoration:none;">
+                                        <i class="bi bi-x-circle" style="font-size:18px;"></i>
+                                        <span>Cancel Request</span>
+                                    </button>
+                                </form>
+                            @else
+                                {{-- Send Friend Request --}}
+                                <form action="{{ route('friend-requests.send') }}" method="POST" class="m-0">
+                                    @csrf
+                                    <input type="hidden" name="receiver_id" value="{{ $post->user_id }}">
+                                    <button type="submit" class="btn btn-link text-white d-flex align-items-center gap-2"
+                                        style="font-size:13px; text-decoration:none;">
+                                        <i class="bi bi-person-plus" style="font-size:18px;"></i>
+                                        <span>Add Friend</span>
+                                    </button>
+                                </form>
+                            @endif
+                        @endif
+
+                        {{-- MESSAGE BUTTON --}}
+                        <a href="{{ route('messages') }}" class="btn btn-link text-white d-flex align-items-center gap-2"
                             style="font-size:13px; text-decoration:none;">
                             <i class="bi bi-chat-dots" style="font-size:18px;"></i>
                             <span>Message</span>
-                        </button>
+                        </a>
+
                     </div>
 
                 </div>
@@ -380,12 +373,41 @@
 
     </div>
 
+    <!-- Age Selection Modal -->
+    <div id="ageModal" class="modal-container" style="display:none;">
+        <div class="modal-content-custom position-relative">
+            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white" onclick="closeAgeModal()"></button>
+            <h5>Select Age</h5>
+            <ul id="ageList"></ul>
+        </div>
+    </div>
+
+    <!-- Breed Selection Modal -->
+    <div id="breedModal" class="modal-container" style="display:none;">
+        <div class="modal-content-custom position-relative">
+            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white"
+                onclick="closeBreedModal()"></button>
+            <h5>Select Breed</h5>
+            <ul id="breedList"></ul>
+        </div>
+    </div>
+
     <!-- City Selection Modal -->
     <div id="cityModal" class="modal-container" style="display:none;">
         <div class="modal-content-custom position-relative">
             <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white" onclick="closeCityModal()"></button>
             <h5 id="modal-title">Select City</h5>
             <ul id="cityList"></ul>
+        </div>
+    </div>
+
+    <!-- Audience Selection Modal -->
+    <div id="audienceModal" class="modal-container" style="display:none;">
+        <div class="modal-content-custom position-relative">
+            <button class="position-absolute top-0 end-0 m-2 btn-close btn-close-white"
+                onclick="closeAudienceModal()"></button>
+            <h5>Select Audience</h5>
+            <ul id="audienceList"></ul>
         </div>
     </div>
 
@@ -396,6 +418,10 @@
                 "Cavite": ["Bacoor City", "Imus City", "Dasmariñas City", "Tagaytay City", "General Trias", "Trece Martires City", "Kawit", "Rosario", "Silang", "Tanza"],
                 "Laguna": ["Calamba City", "Santa Rosa City", "Biñan City", "San Pedro City", "Cabuyao City", "San Pablo City", "Los Baños", "Pagsanjan", "Sta. Cruz", "Bay"]
             };
+
+            const ages = [1, 2, 3, 4, 5];
+            const breeds = ["Labrador", "Golden Retriever", "Pug", "Shih Tzu", "Pomeranian"];
+            const audiences = ["Public", "Friends"];
 
             // LOCATION FILTER LOGIC
             let selectedProvince = localStorage.getItem('selectedProvince') || '';
@@ -417,13 +443,7 @@
 
             function updateLocationText() {
                 const locationText = document.getElementById('location-text');
-                if (selectedCity) {
-                    locationText.textContent = selectedCity;
-                } else if (selectedProvince) {
-                    locationText.textContent = selectedProvince;
-                } else {
-                    locationText.textContent = 'Location';
-                }
+                locationText.textContent = 'Location';
             }
 
             function showCityModal() {
@@ -461,7 +481,90 @@
                 document.getElementById('cityModal').style.display = 'none';
             }
 
-            updateLocationText();
+            // AGE MODAL
+            function showAgeModal() {
+                const modal = document.getElementById('ageModal');
+                const ageList = document.getElementById('ageList');
+
+                ageList.innerHTML = '';
+
+                ages.forEach(age => {
+                    const li = document.createElement('li');
+                    li.textContent = age + " year(s)";
+                    li.onclick = () => {
+                        closeAgeModal();
+                        window.location.href = `/home?age=${age}`;
+                    };
+                    ageList.appendChild(li);
+                });
+
+                modal.style.display = 'flex';
+            }
+
+            function closeAgeModal() {
+                document.getElementById('ageModal').style.display = 'none';
+            }
+
+            // BREED MODAL
+            function showBreedModal() {
+                const modal = document.getElementById('breedModal');
+                const breedList = document.getElementById('breedList');
+
+                breedList.innerHTML = '';
+
+                breeds.forEach(breed => {
+                    const li = document.createElement('li');
+                    li.textContent = breed;
+                    li.onclick = () => {
+                        closeBreedModal();
+                        window.location.href = `/home?breed=${encodeURIComponent(breed)}`;
+                    };
+                    breedList.appendChild(li);
+                });
+
+                modal.style.display = 'flex';
+            }
+
+            function closeBreedModal() {
+                document.getElementById('breedModal').style.display = 'none';
+            }
+
+            // AUDIENCE MODAL
+            function showAudienceModal() {
+                const modal = document.getElementById('audienceModal');
+                const audienceList = document.getElementById('audienceList');
+
+                audienceList.innerHTML = '';
+
+                audiences.forEach(audience => {
+                    const li = document.createElement('li');
+                    li.textContent = audience;
+                    li.onclick = () => {
+                        closeAudienceModal();
+                        window.location.href = `/home?audience=${audience.toLowerCase()}`;
+                    };
+                    audienceList.appendChild(li);
+                });
+
+                modal.style.display = 'flex';
+            }
+
+            function closeAudienceModal() {
+                document.getElementById('audienceModal').style.display = 'none';
+            }
+
+            // Close modals when clicking outside
+            document.getElementById('ageModal')?.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeAgeModal();
+                }
+            });
+
+            document.getElementById('breedModal')?.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeBreedModal();
+                }
+            });
 
             document.getElementById('cityModal')?.addEventListener('click', function (e) {
                 if (e.target === this) {
@@ -469,138 +572,36 @@
                 }
             });
 
-            // AGE FILTER
-            document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('audienceModal')?.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeAudienceModal();
+                }
+            });
 
-                const ages = [1, 2, 3, 4, 5];
+            updateLocationText();
 
-                const ageList = document.getElementById("ageList");
-                const filterBtn = document.getElementById("filter-age");
-                const selectedText = document.getElementById("selectedAge");
+            // Toggle menu for post options (Delete, Report, Block)
+            function toggleMenu(postId) {
+                const menu = document.getElementById('menu-' + postId);
+                const allMenus = document.querySelectorAll('.dropdown-menu-custom');
 
-                // Create list
-                ages.forEach(age => {
-                    const li = document.createElement("li");
-                    li.textContent = age + " year(s)";
-                    li.style.cursor = "pointer";
-                    li.style.padding = "8px 12px";
-                    li.style.color = "white";
-
-                    li.onmouseover = () => li.style.backgroundColor = "#2D5BFF";
-                    li.onmouseout = () => li.style.backgroundColor = "transparent";
-
-                    li.onclick = () => {
-                        selectedText.textContent = age;
-                        ageList.style.display = "none";
-
-                        window.location.href = `/home?age=${age}`;
-                    };
-
-                    ageList.appendChild(li);
-                });
-
-                // Toggle dropdown
-                filterBtn.addEventListener("click", function (e) {
-                    e.stopPropagation();
-                    ageList.style.display = ageList.style.display === "block" ? "none" : "block";
-                });
-
-                // Close when clicking outside
-                document.addEventListener('click', function (e) {
-                    if (!e.target.closest('#filter-age') && !e.target.closest('#ageList')) {
-                        ageList.style.display = 'none';
+                allMenus.forEach(m => {
+                    if (m.id !== 'menu-' + postId) {
+                        m.style.display = 'none';
                     }
                 });
 
-            });
+                // Toggle current menu
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            }
 
-            //BREED FILTER 
-            document.addEventListener('DOMContentLoaded', function () {
-
-                const filterBreedBtn = document.getElementById('filter-breed');
-                const breedMenu = document.getElementById('breed-options');
-
-                // List of example breeds (palitan mo depende sa database)
-                const breeds = ["Labrador", "Golden Retriever", "Pug", "Shih Tzu", "Pomeranian"];
-
-                // Generate breed list
-                breedMenu.innerHTML = "";
-                breeds.forEach(breed => {
-                    const li = document.createElement("li");
-                    li.className = "list-group-item text-white breed-select";
-                    li.style.background = "transparent";
-                    li.style.cursor = "pointer";
-                    li.style.fontSize = "14px";
-                    li.setAttribute("data-breed", breed);
-                    li.textContent = breed;
-
-                    li.onclick = function () {
-                        window.location.href = `/home?breed=${encodeURIComponent(breed)}`;
-                    };
-
-                    breedMenu.appendChild(li);
-                });
-
-                // Toggle dropdown
-                filterBreedBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    breedMenu.style.display = breedMenu.style.display === 'block' ? 'none' : 'block';
-                });
-
-                // Close when clicking outside
-                document.addEventListener('click', function (e) {
-                    if (!e.target.closest('#filter-breed')) {
-                        breedMenu.style.display = 'none';
-                    }
-                });
-            });
-
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const typeBtn = document.querySelector('#filter-type');
-                const typeMenu = document.querySelector('#type-options');
-                const typeText = document.querySelector('#filter-type-text');
-
-                // Toggle dropdown
-                typeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    typeMenu.style.display = typeMenu.style.display === "none" ? "block" : "none";
-                });
-
-                // Click events sa bawat option
-                document.querySelectorAll('.type-select').forEach(item => {
-                    item.addEventListener('click', () => {
-                        const type = item.dataset.type;
-                        typeText.innerText = item.innerText;
-                        window.location.href = `/home?type=${type}`;
+            // Close menus when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.dropdown-menu-custom') && !e.target.closest('button[onclick^="toggleMenu"]')) {
+                    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+                        menu.style.display = 'none';
                     });
-                });
-
-                // Close dropdown kapag click sa labas
-                document.addEventListener('click', () => typeMenu.style.display = "none");
-            });
-
-
-            // Post type filter
-            document.addEventListener('DOMContentLoaded', function () {
-                const typeBtn = document.querySelector('#filter-type');
-                const typeMenu = document.querySelector('#type-options');
-                const typeText = document.querySelector('#filter-type-text');
-
-                typeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    typeMenu.style.display = typeMenu.style.display === "none" ? "block" : "none";
-                });
-
-                document.querySelectorAll('.type-select').forEach(item => {
-                    item.addEventListener('click', () => {
-                        let type = item.dataset.type;
-                        typeText.innerText = item.innerText;
-                        window.location.href = "/home?type=" + type;
-                    });
-                });
-
-                document.addEventListener('click', () => typeMenu.style.display = "none");
+                }
             });
 
             // Image upload redirect to posting page
@@ -641,29 +642,6 @@
                         })
                         .catch(err => console.error(err));
                 });
-            });
-
-            // Age filter selection
-            document.querySelectorAll('.age-select').forEach(item => {
-                item.addEventListener('click', function () {
-                    let selectedAge = this.getAttribute('data-age');
-                    window.location.href = `/home?age=${selectedAge}`;
-                });
-            });
-
-            // Toggle dropdown menu for posts
-            function toggleMenu(postId) {
-                const menu = document.getElementById(`menu-${postId}`);
-                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-            }
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('.position-relative')) {
-                    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
-                        menu.style.display = 'none';
-                    });
-                }
             });
 
         </script>

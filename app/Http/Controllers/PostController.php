@@ -16,7 +16,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        // 1. VALIDATION
+        //VALIDATION
         $request->validate([
             'content' => 'nullable|string|max:1000',
             'age' => 'nullable|integer|min:1|max:5',
@@ -29,17 +29,14 @@ class PostController extends Controller
             'image_base64' => 'nullable|string'
         ]);
 
-        // Get age directly (no mapping needed, it's already 1-5)
         $age = $request->input('age');
 
         $photoPath = null;
 
-        // 2. If user uploaded REAL file from form
         if ($request->hasFile('photoUpload')) {
             $photoPath = $request->file('photoUpload')->store('posts', 'public');
         }
 
-        // 3. If NO FILE uploaded but there is SESSION BASE64
         if (!$photoPath && $request->image_base64) {
 
             $data = $request->image_base64;
@@ -59,7 +56,7 @@ class PostController extends Controller
             $photoPath = 'posts/' . $fileName;
         }
 
-        // 4. CREATE POST
+        // CREATE POST
         Post::create([
             'user_id' => auth()->id(),
             'message' => $request->input('content'),
@@ -68,7 +65,7 @@ class PostController extends Controller
             'province' => $request->input('province'),
             'city' => $request->input('city'),
             'interest' => $request->input('interest'),
-            'audience' => $request->input('audience'),
+            'audience' => strtolower($request->input('audience')),
             'photo' => $photoPath,
         ]);
 
@@ -104,7 +101,7 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $image = $request->image ?? null; // Base64 image from upload page
+        $image = $request->image ?? null;
         return view('posts.index', compact('image'));
     }
 

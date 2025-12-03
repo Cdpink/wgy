@@ -84,9 +84,8 @@
             <a href="{{ route('home') }}" class="home-navlinks fs-4">
                 <i class="bi bi-house"></i>
             </a>
-
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-person-add"></i></a>
-            <a href="#" class="home-navlinks fs-4"><i class="bi bi-chat-dots"></i></a>
+            <a href="{{ route('friend-requests') }}" class="home-navlinks fs-4"><i class="bi bi-person-add"></i></a>
+            <a href="{{ route('messages') }}" class="home-navlinks fs-4"><i class="bi bi-chat-dots"></i></a>
             <a href="{{ route('location') }}" class="home-navlinks fs-4"><i class="bi bi-geo-alt"></i></a>
             <a href="#" class="home-navlinks fs-4"><i class="bi bi-bell"></i></a>
 

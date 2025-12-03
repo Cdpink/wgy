@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/location', [LocationController::class, 'index'])->name('location');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/{userId}', [ProfileController::class, 'show'])->name('profile.show');
 
     Route::get('/certificate', [CertificateController::class, 'index'])->name('certificate');
     Route::post('/certificate', [CertificateController::class, 'upload'])->name('verifycertificate.verify');
@@ -92,7 +93,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/accounts', [SettingsController::class, 'accounts'])->name('account');
 
     Route::get('/friend-requests', [FriendRequestController::class, 'index'])->name('friend-requests');
-    Route::post('/friend-requests/{id}/accept', [FriendRequestController::class, 'accept'])->name('friend-requests.accept');
-    Route::post('/friend-requests/{id}/reject', [FriendRequestController::class, 'reject'])->name('friend-requests.reject');
     Route::post('/friend-requests/send', [FriendRequestController::class, 'send'])->name('friend-requests.send');
+    Route::delete('/friend-requests/{id}/cancel', [FriendRequestController::class, 'cancel'])->name('friend-requests.cancel');
+    Route::post('/friend-requests/{id}/accept', [FriendRequestController::class, 'accept'])->name('friend-requests.accept');
+    Route::delete('/friend-requests/{id}/reject', [FriendRequestController::class, 'reject'])->name('friend-requests.reject');
 });

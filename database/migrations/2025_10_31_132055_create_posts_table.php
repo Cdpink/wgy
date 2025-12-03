@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            // Dog information
-            $table->string('age')->nullable();
+            // Dog information - CHANGED age to integer
+            $table->integer('age')->nullable();
             $table->string('breed')->nullable();
 
             // Location
@@ -24,7 +24,7 @@ return new class extends Migration {
 
             // Post settings
             $table->string('interest')->nullable();
-            $table->string('audience')->nullable();
+            $table->enum('audience', ['public', 'friends'])->default('public');
 
             // Post content
             $table->text('message')->nullable();
@@ -34,6 +34,15 @@ return new class extends Migration {
             $table->integer('likes_count')->default(0);
 
             $table->timestamps();
+
+            // Add indexes for better query performance
+            $table->index('user_id');
+            $table->index('age');
+            $table->index('breed');
+            $table->index('city');
+            $table->index('province');
+            $table->index('audience');
+            $table->index('created_at');
         });
     }
 
